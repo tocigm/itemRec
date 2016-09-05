@@ -15,6 +15,8 @@ angular.module('starter', ['ionic', 'ngCordova'])
         if(window.StatusBar) {
             StatusBar.styleDefault();
         }
+
+        console.log(FileTransfer);
     });
 })
 
@@ -94,8 +96,34 @@ angular.module('starter', ['ionic', 'ngCordova'])
     $scope.urlForImage = function(imageName) {
         var name = imageName.substr(imageName.lastIndexOf('/') + 1);
         var trueOrigin = cordova.file.dataDirectory + name;
+
+        uploadFile(trueOrigin)
+
         return trueOrigin;
     }
+
+
+    function uploadFile(imagePath){
+        var options = new FileUploadOptions();
+        options.fileKey = 'file'
+        options.fileName = imagePath.substr(imagePath.lastIndexOf('/')+1)
+        options.mimeType = 'image/jpeg'
+
+        var ft = new FileTransfer()
+
+        var uri = "http://52.43.12.100:5000"
+        ft.upload(imagePath, uri, onSuccess, onError, options)
+
+        function onSuccess(r){
+            console.log("response: "+ r.response)
+        }
+
+        function onError(error){
+            console.log('error: '+ error.source)
+        }
+    }
+
+
 
     $scope.sendEmail = function() {
         // 1

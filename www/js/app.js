@@ -30,6 +30,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
         $scope.images = ''
         // 2
         var options = {
+            quality : 30,
             destinationType : Camera.DestinationType.FILE_URI,
             sourceType : Camera.PictureSourceType.CAMERA, // Camera.PictureSourceType.PHOTOLIBRARY
             allowEdit : false,

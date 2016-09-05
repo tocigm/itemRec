@@ -24,6 +24,8 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
 
     $scope.addImage = function() {
+        // reset image
+        $scope.images = []
         // 2
         var options = {
             destinationType : Camera.DestinationType.FILE_URI,

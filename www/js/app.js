@@ -27,7 +27,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
 
     $scope.addImage = function() {
         // reset image
-        $scope.images = []
+        $scope.images = ''
         // 2
         var options = {
             destinationType : Camera.DestinationType.FILE_URI,
@@ -35,6 +35,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
             allowEdit : false,
             encodingType: Camera.EncodingType.JPEG,
             popoverOptions: CameraPopoverOptions,
+            correctOrientation: true,
         };
 
         // 3
@@ -70,7 +71,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
             // 6
             function onCopySuccess(entry) {
                 $scope.$apply(function () {
-                    $scope.images.push(entry.nativeURL);
+                    $scope.images = entry.nativeURL;
                 });
             }
 

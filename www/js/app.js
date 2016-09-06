@@ -33,7 +33,9 @@ angular.module('starter', ['ionic', 'ngCordova'])
         var options = {
             destinationType : Camera.DestinationType.FILE_URI,
             sourceType : Camera.PictureSourceType.CAMERA, // Camera.PictureSourceType.PHOTOLIBRARY
-            allowEdit : false,
+            allowEdit : true,
+            targetWidth: 500,
+            targetHeight: 500,
             encodingType: Camera.EncodingType.JPEG,
             popoverOptions: CameraPopoverOptions,
             correctOrientation: true,

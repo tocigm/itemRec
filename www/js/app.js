@@ -23,6 +23,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
 .controller('imageController', function($scope, $cordovaCamera, $cordovaFile) {
     // 1
     $scope.images = [];
+    $scope.predictions = {};
 
 
     $scope.addImage = function() {
@@ -30,7 +31,6 @@ angular.module('starter', ['ionic', 'ngCordova'])
         $scope.images = ''
         // 2
         var options = {
-            quality : 30,
             destinationType : Camera.DestinationType.FILE_URI,
             sourceType : Camera.PictureSourceType.CAMERA, // Camera.PictureSourceType.PHOTOLIBRARY
             allowEdit : false,
@@ -72,7 +72,7 @@ angular.module('starter', ['ionic', 'ngCordova'])
             // 6
             function onCopySuccess(entry) {
                 $scope.$apply(function () {
-                    $scope.images = entry.nativeURL;
+                    $scope.images = $scope.urlForImage(entry.nativeURL);
                 });
             }
 
@@ -96,16 +96,27 @@ angular.module('starter', ['ionic', 'ngCordova'])
     }
 
     $scope.urlForImage = function(imageName) {
+
         var name = imageName.substr(imageName.lastIndexOf('/') + 1);
         var trueOrigin = cordova.file.dataDirectory + name;
 
-        uploadFile(trueOrigin)
+        uploadFile(trueOrigin, 
+            function (predictions){
+                
+                $scope.$apply(function () {
+                    $scope.predictions = JSON.parse(predictions);
+                    console.log(JSON.stringify($scope.predictions));
+                });
+                
+            }, function(error){
+                alert(error)
+        })
 
         return trueOrigin;
     }
 
 
-    function uploadFile(imagePath){
+    function uploadFile(imagePath, success, fail){
         var options = new FileUploadOptions();
         options.fileKey = 'file'
         options.fileName = imagePath.substr(imagePath.lastIndexOf('/')+1)
@@ -117,11 +128,16 @@ angular.module('starter', ['ionic', 'ngCordova'])
         ft.upload(imagePath, uri, onSuccess, onError, options)
 
         function onSuccess(r){
-            console.log("response: "+ r.response)
+            // $scope.$apply(function () {
+            //         $scope.predictions = JSON.parse(predictions);
+            //         alert(JSON.stringify($scope.predictions))
+            //     });
+            return success(r.response)
+
         }
 
         function onError(error){
-            console.log('error: '+ error.source)
+            return error.source
         }
     }
 
